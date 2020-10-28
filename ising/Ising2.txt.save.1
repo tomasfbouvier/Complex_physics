@@ -1,0 +1,77 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+"""
+Created on Sat Aug 29 18:26:47 2020
+
+@author: Usuario
+"""
+
+import numpy as np
+import random as rand
+import matplotlib.pyplot as plt
+
+#Defino configuracion inicial
+
+k=20
+nmax= 1000000
+n0=0.8*nmax
+T=2 # Kelvin
+kb=1.
+M=0.
+Mexp=0.
+Mvec=[0]
+H=0.; M=0.
+J=T; h=0.
+
+S=np.zeros([k,k])
+for i in range (np.shape(S)[0]):
+    for j in range(np.shape(S)[1]):
+        S[i,j] = rand.randint(-10000,10000)
+        if(S[i,j]<0):
+            S[i,j]=-1
+        else:
+            S[i,j]=1
+
+
+size=np.shape(S)
+
+for i in range(size[0]):
+	for j in range(size[1]):
+#		H+= -1/2*J*S[i,j]*(S[(i+1)%k,j] + S[i,(j+1)%k] + S[(i-1)%k,j] + S[i,(j-1)%k])- h*S[i,j]
+		M+=S[i,j]
+
+n=0
+vecH=[]
+vecM=[]
+
+while (n<nmax):
+	n+=1
+	i=rand.randrange(0,k,1);j=rand.randrange(0,k,1)	
+	dE= -2*J*S[i,j]*(S[(i+1)%k,j] + S[i,(j+1)%k] + S[(i-1)%k,j] + S[i,(j-1)%k])
+	print(dE)
+	if(dE<=0):
+		S[i,j]*=-1
+		H=H2
+		M+= 2*S[i,j]
+	else:
+		r=np.e**(-dE/(kb*T))
+		q=rand.random()
+		if r>q:
+			S[i,j]*=-1
+			H=H2
+			M+= 2*S[i,j]
+
+
+	vecH.append(H2)
+	vecM.append(M/k**2)
+plt.figure()
+plt.imshow(S)
+plt.show()
+plt.figure()
+plt.plot(np.linspace(0,n,n), vecH)
+plt.show()
+plt.figure()
+plt.plot(np.linspace(0,n,n), vecM)
+plt.show()

@@ -1,0 +1,48 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+"""
+Created on Sat Aug 29 18:26:47 2020
+
+@author: Usuario
+"""
+
+import numpy as np
+import random as rand
+import matplotlib.pyplot as plt
+
+#Defino configuracion inicial
+
+k=N
+nmax=300000
+n0=0.8*nmax
+n=0
+T=2 # Kelvin
+kb=1
+M=0
+Mexp=0
+Mvec=[0]
+H=0; M=0
+J=T; h=0
+
+S=np.zeros([k,k])
+for i in range (np.shape(S)[0]):
+    for j in range(np.shape(S)[1]):
+        S[i,j] = rand.randint(-10000,10000)
+        if(S[i,j]<0):
+            S[i,j]=-1
+        else:
+            S[i,j]=1
+
+plt.figure()
+plt.imshow(S)
+plt.show()
+
+size=np.shape(S)
+for i in range(size[0]):
+	for j in range(size[1]):
+		H+= -1/2*J*S[i,j]*(S[(i+1)%N,j] + S[i,(j+1)%N] + S[(i-1)%N,j] + S[i,(j-1)%N])- h*S[i,j]
+		M+=S[i,j]
+	
+
